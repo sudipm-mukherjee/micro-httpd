@@ -1,0 +1,7 @@
+micro-httpd (20011214-1) unstable; urgency=low
+
+  * Initial Release.
+  * Makefile rewritten.
+
+ -- Daniel Baumann <daniel.baumann@panthera-systems.net>  Sun,  5 Dec 2004 20:12:42 +0100
+
