@@ -1,15 +1,13 @@
 This package was debianized by Daniel Baumann <daniel.baumann@panthera-systems.net> on
 Sun,  5 Dec 2004 18:38:12 +0100.
 
-It was downloaded from <http://www.acme.com/software/micro_httpd/>
+It was downloaded from <http://www.acme.com/software/micro_httpd/>.
 
-Copyright: Jef Poskanzer <jef@acme.com>
-
-Upstream Author: Jef Poskanzer <jef@acme.com>
+Copyright Holder: Jef Poskanzer <jef@acme.com>
 
 License:
 
-	Copyright (C) 2001  Jef Poskanzer <jef@acme.com>
+	Copyright (C) 1999-2005 Jef Poskanzer <jef@acme.com>
 
 	Redistribution and use in source and binary forms, with or without
 	modification, are permitted provided that the following conditions are
@@ -29,7 +27,7 @@ License:
 	LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
 	CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
 	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
-	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 	THE POSSIBILITY OF SUCH DAMAGE.

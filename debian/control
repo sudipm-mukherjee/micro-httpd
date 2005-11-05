@@ -2,24 +2,25 @@ Source: micro-httpd
 Section: web
 Priority: optional
 Maintainer: Daniel Baumann <daniel.baumann@panthera-systems.net>
-Build-Depends: debhelper (>= 4.0.0)
-Standards-Version: 3.6.1
+Build-Depends: debhelper (>= 4.0.0), dpatch
+Standards-Version: 3.6.2
 
 Package: micro-httpd
+Section: web
 Architecture: any
-Provides: httpd
+Depends: ${shlibs:Depends}, micro-inetd | netkit-inetd | inetutils-inetd | ipsvd | openbsd-inetd | rinetd | rlinetd | xinetd
 Suggests: micro-proxy
-Depends: micro-inetd | inetutils-inetd | netkit-inetd | openbsd-inetd | xinetd
+Provides: httpd
 Description: really small HTTP server
- A very small Unix-based HTTP server. It runs from inetd, which means its
- performance is poor. But for low-traffic sites, it's quite adequate. It
- implements all the basic features of an HTTP server, including:
+ micro_httpd is a very small Unix-based HTTP server. It runs from inetd, which
+ means its performance is poor. But for low-traffic sites, it's quite adequate.
+ It implements all the basic features of an HTTP server, including:
  .
    * Security against ".." filename snooping.
    * The common MIME types.
    * Trailing-slash redirection.
    * index.html
-   * Directory listings.
+   * Directory listings. 
  .
  All in 150 lines of code.
- micro-httpd can also be used to serve HTTPS by wrapping it with stunnel.
+ micro_httpd can also be used to serve HTTPS by wrapping it with stunnel.

@@ -1,7 +1,14 @@
+micro-httpd (20050629-1) unstable; urgency=low
+
+  * New upstream release (Closes: #336222).
+  * Bumped policy version.
+  * Minor formal cleanups.
+
+ -- Daniel Baumann <daniel.baumann@panthera-systems.net>  Sat,  5 Nov 2005 13:07:00 +0100
+
 micro-httpd (20011214-1) unstable; urgency=low
 
   * Initial Release.
   * Makefile rewritten.
 
  -- Daniel Baumann <daniel.baumann@panthera-systems.net>  Sun,  5 Dec 2004 20:12:42 +0100
-
