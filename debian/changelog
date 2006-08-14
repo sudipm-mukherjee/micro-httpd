@@ -1,9 +1,3 @@
-micro-httpd (20051212-3~bpo.1) sarge-backports; urgency=low
-
-  * Rebuild for Debian Backports <http://www.backports.org/>.
-
- -- Daniel Baumann <daniel@debian.org>  Mon, 14 Aug 2006 14:25:00 +0200
-
 micro-httpd (20051212-3) unstable; urgency=low
 
   * hrm, I'm too lazy to change the address in control :(
