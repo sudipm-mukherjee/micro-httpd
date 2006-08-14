@@ -1,7 +1,7 @@
 Source: micro-httpd
 Section: web
 Priority: optional
-Maintainer: Daniel Baumann <daniel.baumann@panthera-systems.net>
+Maintainer: Daniel Baumann <daniel@debian.org>
 Build-Depends: debhelper (>= 4), dpatch
 Standards-Version: 3.7.2
 
