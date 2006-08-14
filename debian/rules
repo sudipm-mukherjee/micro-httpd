@@ -14,11 +14,11 @@ else
 endif
 
 build: build-stamp
-build-stamp: patch
+build-stamp: patch-stamp
 	dh_testdir
 
 	# Building package
-	$(MAKE)
+	CFLAGS="$(CFLAGS)" $(MAKE)
 
 	touch build-stamp
 

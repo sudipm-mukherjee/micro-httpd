@@ -1,5 +1,7 @@
 #!/bin/sh /usr/share/dpatch/dpatch-run
-## 01-manpage.dpatch by Daniel Baumann <daniel.baumann@panthera-systems.net>
+## 01-manpage.dpatch by Daniel Baumann <daniel@debian.org>
+##
+## DP: Using (C) instead of the copyright-symbol.
 
 @DPATCH@
 
