@@ -1,3 +1,9 @@
+micro-httpd (20051212-4) unstable; urgency=low
+
+  * Orphaning package.
+
+ -- Daniel Baumann <daniel@debian.org>  Sat, 20 Jan 2007 12:23:00 +0100
+
 micro-httpd (20051212-3) unstable; urgency=low
 
   * hrm, I'm too lazy to change the address in control :(

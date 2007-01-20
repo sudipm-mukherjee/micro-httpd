@@ -1,14 +1,14 @@
 Source: micro-httpd
 Section: web
 Priority: optional
-Maintainer: Daniel Baumann <daniel@debian.org>
-Build-Depends: debhelper (>= 4), dpatch
+Maintainer: Debian QA Group <packages@qa.debian.org>
+Build-Depends: debhelper (>= 5), dpatch
 Standards-Version: 3.7.2
 
 Package: micro-httpd
 Section: web
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: micro-inetd, micro-proxy
 Provides: httpd
 Description: really small HTTP server
@@ -20,7 +20,9 @@ Description: really small HTTP server
    * The common MIME types.
    * Trailing-slash redirection.
    * index.html
-   * Directory listings. 
+   * Directory listings.
  .
  All in 150 lines of code.
  micro_httpd can also be used to serve HTTPS by wrapping it with stunnel.
+ .
+  Homepage: <http://www.acme.com/software/micro_httpd/>
