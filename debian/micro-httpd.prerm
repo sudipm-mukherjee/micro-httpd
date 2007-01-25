@@ -1,0 +1,48 @@
+#!/bin/sh
+
+set -e
+
+PACKAGE=$(basename $0 | sed 's/\..*//')
+pkgdir=/usr/share/$PACKAGE
+conf=/etc/inetd.conf
+port="www"
+entry=
+
+Die ()
+{
+    echo "$0: $*" >&2
+    exit 1
+}
+
+Debhelper ()
+{
+    :
+    #DEBHELPER#
+}
+
+InetdName ()
+{
+    name=inetd
+
+    if [ -f /etc/init.d/openbsd-inetd ]; then
+	name="openbsd-inetd"
+    fi
+
+    echo $name
+}
+
+Main ()
+{
+    if [ "$1" = "remove" ]; then
+
+	echo "$0: removing $conf entry" >&2
+	update-inetd --group STANDARD --remove "$port.*$PACKAGE"
+	invoke-rc.d $(InetdName) reload
+    fi
+
+    Debhelper
+}
+
+Main "$@"
+
+# End of file

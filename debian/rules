@@ -7,6 +7,11 @@ include /usr/share/dpatch/dpatch.make
 
 CFLAGS = -Wall -g
 
+PACKAGE = micro-httpd
+BIN	= micro_httpd
+BINDIR  = $(CURDIR)/debian/micro-httpd/usr/sbin
+MANDIR  = $(CURDIR)/debian/micro-httpd/usr/share/man/man8
+
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
 else
@@ -39,7 +44,10 @@ install: build
 	dh_installdirs
 
 	# Installing package
-	$(MAKE) install BINDIR=$(CURDIR)/debian/micro-httpd/usr/sbin MANDIR=$(CURDIR)/debian/micro-httpd/usr/share/man/man8
+	$(MAKE) install BINDIR=$(BINDIR) MANDIR=$(MANDIR)
+	# rename binary
+	mv $(BINDIR)/$(BIN) $(BINDIR)/$(PACKAGE)
+	mv $(MANDIR)/$(BIN).8 $(MANDIR)/$(PACKAGE).8
 
 binary-indep: build install
 
@@ -47,7 +55,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs
-	dh_installdocs
+	dh_installdocs debian/NEWS.Debian
 	dh_install
 	dh_installman
 	dh_link

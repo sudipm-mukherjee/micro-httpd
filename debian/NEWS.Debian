@@ -1,0 +1,10 @@
+micro-httpd (20051212-5) unstable; urgency=low
+
+  The binary name has changed from micro_httpd to the micro-httpd.
+  If you have hand written /etc/inetd.conf or /etc/xinet.d/* entry for
+  previous version, please change the binary name.
+
+  The package now installs /etc/inetd.conf entry automatically, but only
+  if it is not yet occupied by another 'www' entry.
+
+ -- Jari Aalto <jari.aalto@cante.net>  Thu, 25 Jan 2007 23:15:19 +0200

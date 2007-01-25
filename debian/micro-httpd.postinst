@@ -1,0 +1,84 @@
+#!/bin/sh
+
+set -e
+
+PACKAGE=$(basename $0 | sed 's/\..*//')
+
+WWWDIR=/var/www
+conf=/etc/inetd.conf
+pkgdir=/usr/share/$PACKAGE
+port="www"
+entry="$port\tstream\ttcp\tnowait root\t/usr/sbin/tcpd /usr/sbin/$PACKAGE $WWWDIR"
+
+Debhelper ()
+{
+    :
+    #DEBHELPER#
+}
+
+Warn ()
+{
+    echo "$*" >&2
+}
+
+IsInInetd ()
+{
+    #  Debian may have inetd.conf entry already
+    grep -q "^[[:space:]]*$port.*$PACKAGE" $conf
+}
+
+IsConflictInetd ()
+{
+    grep -q "^[[:space:]#]*$port" $conf
+}
+
+HttpdWarning ()
+{
+    # There isn't much point inetd if apache already installed and
+    # occupies port 80
+
+    if ls /etc/init.d/apache* &> /dev/null; then
+        Warn "$PACKAGE: [WARN] Apache found. $conf uses port 'www' which may be same (you may need to change port)"
+    fi
+}
+
+InetdName ()
+{
+    name=inetd
+
+    if [ -f /etc/init.d/openbsd-inetd ]; then
+        name="openbsd-inetd"
+    fi
+
+    echo $name
+}
+
+InstallInetd ()
+{
+    Warn "$0: adding new $conf entry"
+    update-inetd --group STANDARD --add "$entry"
+
+    #  This directory must be there
+
+    [ ! -d $WWWDIR ] && mkdir -p $WWWDIR
+
+    invoke-rc.d $(InetdName) reload
+}
+
+Main ()
+{
+    if [ "$1" = "install" ] || [ "$1" = "configure" ]; then
+        if IsConflictInetd ; then
+            Warn "$PACKAGE: [WARNING] Not installing to $conf due to existing 'www' entry"
+        else
+	    IsInInetd || InstallInetd
+            HttpdWarning
+        fi
+    fi
+
+    Debhelper
+}
+
+Main "$@"
+
+# End of file
