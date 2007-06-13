@@ -1,3 +1,14 @@
+micro-httpd (20051212-6) unstable; urgency=low
+
+  * ACK NMU diff by Luk Claes
+  * debian/dirs: Removed. Moved directory creation to
+    debian/rules.
+  * debian/patches/20_micro_httpd.c-utf-8.patch: New file. Changed
+    charset=iso-8859-1 to utf-8. Patch thanks to
+    Nick Schmalenberger <ohp6oD3y@schmalenberger.us>
+
+ -- Jari Aalto <jari.aalto@cante.net>  Wed, 13 Jun 2007 12:44:08 +0300
+
 micro-httpd (20051212-5.1) unstable; urgency=high
 
   * Non-maintainer upload during BSP.

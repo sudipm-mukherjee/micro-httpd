@@ -44,6 +44,7 @@ install: build
 	dh_installdirs
 
 	# Installing package
+	install -d -m 0755 $(BINDIR) $(MANDIR)
 	$(MAKE) install BINDIR=$(BINDIR) MANDIR=$(MANDIR)
 	# rename binary
 	mv $(BINDIR)/$(BIN) $(BINDIR)/$(PACKAGE)

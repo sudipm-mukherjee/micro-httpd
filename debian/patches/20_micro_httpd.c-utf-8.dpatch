@@ -1,0 +1,36 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## ../micro_httpd.c-utf-8.patch.dpatch by Jari Aalto <jari.aalto@cante.net>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: charset=iso-8859-1 to utf-8
+
+@DPATCH@
+
+ micro_httpd.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git micro_httpd.c micro_httpd.c
+index c87034a..2ebbd48 100644
+--- old/micro_httpd.c
++++ new/micro_httpd.c
+@@ -197,9 +197,9 @@ get_mime_type( char* name )
+ 
+     dot = strrchr( name, '.' );
+     if ( dot == (char*) 0 )
+-	return "text/plain; charset=iso-8859-1";
++	return "text/plain; utf-8";
+     if ( strcmp( dot, ".html" ) == 0 || strcmp( dot, ".htm" ) == 0 )
+-	return "text/html; charset=iso-8859-1";
++	return "text/html; utf-8";
+     if ( strcmp( dot, ".jpg" ) == 0 || strcmp( dot, ".jpeg" ) == 0 )
+ 	return "image/jpeg";
+     if ( strcmp( dot, ".gif" ) == 0 )
+@@ -228,7 +228,7 @@ get_mime_type( char* name )
+ 	return "application/ogg";
+     if ( strcmp( dot, ".pac" ) == 0 )
+ 	return "application/x-ns-proxy-autoconfig";
+-    return "text/plain; charset=iso-8859-1";
++    return "text/plain; utf-8";
+     }
+ 
+ 
