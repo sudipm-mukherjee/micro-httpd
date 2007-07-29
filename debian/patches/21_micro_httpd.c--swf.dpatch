@@ -1,0 +1,19 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 30_micro_httpd.c-swf.dpatch by  Nick Schmalenberger <nick@schmalenberger.us>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: added shockwave flash mime type support for .swf files
+
+@DPATCH@
+diff -urNad micro-httpd-20051212~/micro_httpd.c micro-httpd-20051212/micro_httpd.c
+--- micro-httpd-20051212~/micro_httpd.c	2005-12-13 07:05:11.000000000 -0800
++++ micro-httpd-20051212/micro_httpd.c	2007-07-07 01:39:15.000000000 -0700
+@@ -214,6 +214,8 @@
+ 	return "audio/wav";
+     if ( strcmp( dot, ".avi" ) == 0 )
+ 	return "video/x-msvideo";
++    if ( strcmp( dot, ".swf" ) == 0 )
++	return "application/x-shockwave-flash";
+     if ( strcmp( dot, ".mov" ) == 0 || strcmp( dot, ".qt" ) == 0 )
+ 	return "video/quicktime";
+     if ( strcmp( dot, ".mpeg" ) == 0 || strcmp( dot, ".mpe" ) == 0 )

@@ -1,7 +1,17 @@
+micro-httpd (20051212-7) unstable; urgency=low
+
+  * debian/control: (Depends): replaced update-inetd with
+    openbsd-inetd | inet-superserver.
+  * debian/patches: (30): Added *.swf Shockwave support. 
+    Patch by Nick Schmalenberger <ohp6oD3y A T schmalenberger.us>.
+    Thanks.
+
+ -- Jari Aalto <jari.aalto@cante.net>  Sun, 29 Jul 2007 14:40:45 +0300
+
 micro-httpd (20051212-6) unstable; urgency=low
 
   * ACK NMU diff by Luk Claes
-  * debian/dirs: Removed. Moved directory creation to
+  * debian/dirs: Removed. Moved directory creation xto
     debian/rules.
   * debian/patches/20_micro_httpd.c-utf-8.patch: New file. Changed
     charset=iso-8859-1 to utf-8. Patch thanks to

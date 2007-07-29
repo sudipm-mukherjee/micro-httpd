@@ -8,7 +8,7 @@ Standards-Version: 3.7.2
 Package: micro-httpd
 Section: web
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, update-inetd
+Depends: ${shlibs:Depends}, ${misc:Depends}, openbsd-inetd | inet-superserver
 Suggests: micro-inetd, micro-proxy
 Provides: httpd
 Description: really small HTTP server
