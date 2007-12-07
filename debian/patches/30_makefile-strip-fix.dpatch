@@ -1,0 +1,21 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## ../makefile-strip-fix.patch.dpatch by Jari Aalto <jari.aalto@cante.net>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: No description.
+
+@DPATCH@
+
+diff --git a/Makefile b/Makefile
+index 7cdc785..52bb489 100644
+--- a/Makefile
++++ b/Makefile
+@@ -4,7 +4,7 @@ CC =		gcc
+ CFLAGS =	-O
+ #CFLAGS =	-g
+ #SYSVLIBS =	-lnsl -lsocket
+-LDFLAGS =	-s ${SYSVLIBS}
++LDFLAGS =	${SYSVLIBS}
+ #LDFLAGS =	-g ${SYSVLIBS}
+ 
+ all:		micro_httpd

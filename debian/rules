@@ -33,7 +33,7 @@ clean: unpatch
 	rm -f build-stamp
 
 	# Cleaning package
-	-$(MAKE) clean
+	[ -f Makefile ] && $(MAKE) clean
 
 	dh_clean
 

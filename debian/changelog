@@ -1,8 +1,22 @@
+micro-httpd (20051212-8) unstable; urgency=low
+
+  * debian/copyright:
+    - Update to latest dh-make template (formatting).
+  * debian/rules: (clean):
+    - Check Makefile before running clean (lintian fix).
+  * debian: micro-httpd.{prerm,postinst}:
+    - (InetdName): Support rlinetd (Closes: #454655)
+    - Remove &> basism (lintian fix).
+  * debian/watch:
+    - New file
+
+ -- Jari Aalto <jari.aalto@cante.net>  Fri, 07 Dec 2007 11:58:02 +0000
+
 micro-httpd (20051212-7) unstable; urgency=low
 
   * debian/control: (Depends): replaced update-inetd with
     openbsd-inetd | inet-superserver.
-  * debian/patches: (30): Added *.swf Shockwave support. 
+  * debian/patches: (30): Added *.swf Shockwave support.
     Patch by Nick Schmalenberger <ohp6oD3y A T schmalenberger.us>.
     Thanks.
 

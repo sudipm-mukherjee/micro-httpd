@@ -37,8 +37,9 @@ HttpdWarning ()
     # There isn't much point inetd if apache already installed and
     # occupies port 80
 
-    if ls /etc/init.d/apache* &> /dev/null; then
-        Warn "$PACKAGE: [WARN] Apache found. $conf uses port 'www' which may be same (you may need to change port)"
+    if ls /etc/init.d/apache* > /dev/null 2> /dev/null; then
+        Warn "$PACKAGE: [WARN] Apache found. $conf uses port 'www'" \
+             "which may be same (you may need to change port)"
     fi
 }
 
@@ -48,6 +49,8 @@ InetdName ()
 
     if [ -f /etc/init.d/openbsd-inetd ]; then
         name="openbsd-inetd"
+    elif [ -f /etc/init.d/rlinetd ]; then
+        name="rlinetd"
     fi
 
     echo $name
