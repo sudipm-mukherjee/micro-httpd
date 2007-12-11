@@ -3,7 +3,7 @@ Section: web
 Priority: optional
 Maintainer: Jari Aalto <jari.aalto@cante.net>
 Build-Depends: debhelper (>= 5), dpatch
-Standards-Version: 3.7.2
+Standards-Version: 3.7.3
 
 Package: micro-httpd
 Section: web

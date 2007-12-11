@@ -2,7 +2,7 @@
 ## ../makefile-strip-fix.patch.dpatch by Jari Aalto <jari.aalto@cante.net>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: Remove strip
 
 @DPATCH@
 
