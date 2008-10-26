@@ -3,17 +3,20 @@ Section: web
 Priority: optional
 Maintainer: Jari Aalto <jari.aalto@cante.net>
 Build-Depends: debhelper (>= 5), dpatch
-Standards-Version: 3.7.3
+Standards-Version: 3.8.0
+Vcs-Browser: http://git.debian.org/?p=collab-maint/micro-httpd.git
+Vcs-Git: git://git.debian.org/git/collab-maint/micro-httpd.git
+Homepage: http://www.acme.com/software/micro_httpd
 
 Package: micro-httpd
 Section: web
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, openbsd-inetd | inet-superserver
-Suggests: micro-inetd, micro-proxy
+Depends: ${shlibs:Depends}, openbsd-inetd | inet-superserver | micro-inetd | netcat-traditional
+Suggests: micro-proxy
 Provides: httpd
 Description: really small HTTP server
- micro_httpd is a very small Unix-based HTTP server. It runs from inetd, which
- means its performance is poor. But for low-traffic sites, it's quite adequate.
+ A very small HTTP server implemented in 150 lines of code.
+ Program can be used to serve HTTPS by wrapping it with stunnel.
  It implements all the basic features of an HTTP server, including:
  .
    * Security against ".." filename snooping
@@ -21,8 +24,3 @@ Description: really small HTTP server
    * Trailing-slash redirection
    * index.html
    * Directory listings
- .
- All in 150 lines of code.
- micro_httpd can also be used to serve HTTPS by wrapping it with stunnel.
- .
-  Homepage: <http://www.acme.com/software/micro_httpd/>

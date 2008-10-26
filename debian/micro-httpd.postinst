@@ -2,8 +2,8 @@
 
 set -e
 
+PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 PACKAGE=$(basename $0 | sed 's/\..*//')
-
 WWWDIR=/var/www
 conf=/etc/inetd.conf
 pkgdir=/usr/share/$PACKAGE
@@ -14,6 +14,11 @@ Debhelper ()
 {
     :
     #DEBHELPER#
+}
+
+IsInetd ()
+{
+    [ -x /usr/sbin/update-inetd ]
 }
 
 Warn ()
@@ -68,17 +73,22 @@ InstallInetd ()
     invoke-rc.d $(InetdName) reload
 }
 
-Main ()
+MainInetd ()
 {
     if [ "$1" = "install" ] || [ "$1" = "configure" ]; then
         if IsConflictInetd ; then
-            Warn "$PACKAGE: [WARNING] Not installing to $conf due to existing 'www' entry"
+            Warn "$PACKAGE: [WARNING] Not installing to $conf" \
+		"due to existing 'www' entry"
         else
 	    IsInInetd || InstallInetd
             HttpdWarning
         fi
     fi
+}
 
+Main ()
+{
+    IsInetd && MainInetd "$@"
     Debhelper
 }
 

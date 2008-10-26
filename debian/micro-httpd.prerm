@@ -2,6 +2,7 @@
 
 set -e
 
+PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 PACKAGE=$(basename $0 | sed 's/\..*//')
 pkgdir=/usr/share/$PACKAGE
 conf=/etc/inetd.conf
@@ -12,6 +13,11 @@ Die ()
 {
     echo "$0: $*" >&2
     exit 1
+}
+
+IsInetd ()
+{
+    [ -x /usr/sbin/update-inetd ]
 }
 
 Debhelper ()
@@ -33,7 +39,7 @@ InetdName ()
     echo $name
 }
 
-Main ()
+MainInetd ()
 {
     if [ "$1" = "remove" ]; then
 
@@ -41,7 +47,11 @@ Main ()
 	update-inetd --group STANDARD --remove "$port.*$PACKAGE"
 	invoke-rc.d $(InetdName) reload
     fi
+}
 
+Main ()
+{
+    IsInetd && MainInetd "$@"
     Debhelper
 }
 

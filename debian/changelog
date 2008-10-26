@@ -1,3 +1,32 @@
+micro-httpd (20051212-10) unstable; urgency=low
+
+  * debian/README.Debian-source:
+    - New file. Epxlain debian/*.8.
+  * debian/*.8
+    - New file generated form *.8.pod. Original manual page is no longer
+      used.
+  * debian/control:
+    - (Description): Make more compact.
+    - (Depends): Add alternatives 'micro-inetd | netcat-traditional'
+      Closes: #482082. Remove unused ${misc:Depends}.
+    - (Homepage): New field.
+    - (Standards-Version): Update to 3.8.0.
+    - (Suggests): move micro-inetd to 'Depends:' alternatives.
+    - (Vcs-*): Add new fields.
+  * debian/micro-httpd.{postinst,prerm}:
+    - Check if update-inetd command exists (superserver is not requirement).
+    - Set PATH.
+    - (IsInetd): New.
+    - (MainInetd): New.
+  * debian/rules:
+    - (man): New target.
+    - (install): Adjust install calls
+    - (binary-arch): Install manual page form debian/*.8
+  * debian/debian-vars.mk
+    - New file
+
+ -- Jari Aalto <jari.aalto@cante.net>  Sun, 26 Oct 2008 12:14:05 +0300
+
 micro-httpd (20051212-9) unstable; urgency=low
 
   * debian/control:
@@ -6,6 +35,7 @@ micro-httpd (20051212-9) unstable; urgency=low
     - (12_micro_httpd.8--hyphen-fix.dpatch): New file.
       Fix hyphenation in manual page.
     - (30_makefile-strip-fix.dpatch): Add description (lintian fix).
+      Closes #437563
 
  -- Jari Aalto <jari.aalto@cante.net>  Tue, 11 Dec 2007 11:04:12 +0000
 

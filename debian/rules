@@ -1,29 +1,26 @@
 #!/usr/bin/make -f
 
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
-
-include /usr/share/dpatch/dpatch.make
-
-CFLAGS = -Wall -g
-
 PACKAGE = micro-httpd
 BIN	= micro_httpd
-BINDIR  = $(CURDIR)/debian/micro-httpd/usr/sbin
-MANDIR  = $(CURDIR)/debian/micro-httpd/usr/share/man/man8
 
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
+MANSECT = 8
+MANSRC  = debian
+MK_MAN  = pod2man.mk
+
+include debian/debian-vars.mk
+include /usr/share/dpatch/dpatch.make
+
+man:
+	# convert *.pod to manual page
+	$(MAKE) -C $(MANSRC) -f $(MK_MAN) PACKAGE=$(PACKAGE) \
+	MANSECT=$(MANSECT) makeman
 
 build: build-stamp
 build-stamp: patch-stamp
 	dh_testdir
 
 	# Building package
-	CFLAGS="$(CFLAGS)" $(MAKE)
+	CFLAGS="$(CFLAGS)" $(MAKE) $(MAKE_FLAGS)
 
 	touch build-stamp
 
@@ -33,7 +30,7 @@ clean: unpatch
 	rm -f build-stamp
 
 	# Cleaning package
-	[ -f Makefile ] && $(MAKE) clean
+	[ ! -f Makefile ] || $(MAKE) clean
 
 	dh_clean
 
@@ -44,11 +41,15 @@ install: build
 	dh_installdirs
 
 	# Installing package
-	install -d -m 0755 $(BINDIR) $(MANDIR)
-	$(MAKE) install BINDIR=$(BINDIR) MANDIR=$(MANDIR)
+	install -d -m 0755 $(SBINDIR) $(MAN8DIR)
+	$(MAKE) install BINDIR=$(SBINDIR) MANDIR=$(MAN8DIR)
+
 	# rename binary
-	mv $(BINDIR)/$(BIN) $(BINDIR)/$(PACKAGE)
-	mv $(MANDIR)/$(BIN).8 $(MANDIR)/$(PACKAGE).8
+	mv $(SBINDIR)/$(BIN) $(SBINDIR)/$(PACKAGE)
+
+	# replace original manual page
+	rm -f $(MAN8DIR)/*
+	$(INSTALL_DATA) $(MANSRC)/*.8 $(MAN8DIR)
 
 binary-indep: build install
 
@@ -56,9 +57,9 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs
-	dh_installdocs debian/NEWS.Debian
+	dh_installdocs debian/NEWS.Debian debian/README*
 	dh_install
-	dh_installman
+	dh_installman $(MANSRC)/*.8
 	dh_link
 	dh_strip
 	dh_compress
@@ -70,4 +71,4 @@ binary-arch: build install
 	dh_builddeb
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
+.PHONY: build clean binary-indep binary-arch binary install man
