@@ -8,7 +8,7 @@ WWWDIR=/var/www
 conf=/etc/inetd.conf
 pkgdir=/usr/share/$PACKAGE
 port="www"
-entry="$port\tstream\ttcp\tnowait root\t/usr/sbin/tcpd /usr/sbin/$PACKAGE $WWWDIR"
+entry="$port\tstream\ttcp\tnowait nobody:www-data\t/usr/sbin/tcpd /usr/sbin/$PACKAGE $WWWDIR"
 
 Debhelper ()
 {
@@ -16,49 +16,62 @@ Debhelper ()
     #DEBHELPER#
 }
 
-IsInetd ()
-{
-    [ -x /usr/sbin/update-inetd ]
-}
-
 Warn ()
 {
     echo "$*" >&2
 }
 
+IsInetd ()
+{
+    [ -x /usr/sbin/update-inetd ]
+}
+
+IsInetdConf ()
+{
+    [ -f $conf ]
+}
+
 IsInInetd ()
 {
+    [ -f $conf ] || return 10
+
     #  Debian may have inetd.conf entry already
-    grep -q "^[[:space:]]*$port.*$PACKAGE" $conf
+    grep -q "^[[:space:]]*$port.*$PACKAGE" $conf ||
+
+    #  check for other PORT alias name as well
+    grep -q "^[[:space:]]*(http|80)[[:space:]].*$PACKAGE" $conf
 }
 
 IsConflictInetd ()
 {
+    #  Check if some other service already uses PORT
     grep -q "^[[:space:]#]*$port" $conf
 }
 
 HttpdWarning ()
 {
-    # There isn't much point inetd if apache already installed and
+    # There isn't much point of inetd if apache already installed and
     # occupies port 80
 
-    if ls /etc/init.d/apache* > /dev/null 2> /dev/null; then
-        Warn "$PACKAGE: [WARN] Apache found. $conf uses port 'www'" \
-             "which may be same (you may need to change port)"
+    if ls /etc/init.d/apache* > /dev/null 2>&1 ; then
+        Warn "$0: [WARN] Apache found. $PACKAGE $conf uses port '$port'" \
+             "which may be same as in Apache (you may need to change $PACKAGE port)"
     fi
 }
 
 InetdName ()
 {
-    name=inetd
+    local name=
 
-    if [ -f /etc/init.d/openbsd-inetd ]; then
+    if [ -f /etc/init.d/inetutils-inetd ]; then
+	name=inetutils-inetd
+    elif [ -f /etc/init.d/openbsd-inetd ]; then
         name="openbsd-inetd"
     elif [ -f /etc/init.d/rlinetd ]; then
         name="rlinetd"
     fi
 
-    echo $name
+    [ ! "$name" ] || echo $name
 }
 
 InstallInetd ()
@@ -70,15 +83,18 @@ InstallInetd ()
 
     [ ! -d $WWWDIR ] && mkdir -p $WWWDIR
 
-    invoke-rc.d $(InetdName) reload
+    local name=$(InetdName)
+
+    [ ! "$name" ] || invoke-rc.d $name reload
 }
 
 MainInetd ()
 {
-    if [ "$1" = "install" ] || [ "$1" = "configure" ]; then
+    if [ "$1" = "install" ] || [ "$1" = "configure" ]
+    then
         if IsConflictInetd ; then
             Warn "$PACKAGE: [WARNING] Not installing to $conf" \
-		"due to existing 'www' entry"
+		"due to existing '$port' entry"
         else
 	    IsInInetd || InstallInetd
             HttpdWarning
@@ -88,7 +104,10 @@ MainInetd ()
 
 Main ()
 {
-    IsInetd && MainInetd "$@"
+    if IsInetd ; then
+	MainInetd "$@"
+    fi
+
     Debhelper
 }
 

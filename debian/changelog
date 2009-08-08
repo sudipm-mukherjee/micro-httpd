@@ -1,3 +1,28 @@
+micro-httpd (20051212-11) unstable; urgency=low
+
+  * debian/compat: update to 7.
+  * debian/control
+    - (Build-Depends): update debhelper 7.
+    - (Section): change web to httpd as per
+      http://news.gmane.org/find-root.php?message_id=%3c87r60yiwu7.fsf%40vorlon.ganneff.de%3e
+    - (Standards-Version): Update to 3.8.2.
+  * debian/micro-httpd.postinst
+    - (entry): Check for port name 'http'; do not run as root, but
+      nobody:www-data (Closes: #517705).
+    - (InetdName): No default value (Closes: #535203).
+  * debian/micro-httpd.prerm
+    - (InetdName): No default value.
+  * debian/rules
+    - (install): add dh_lintian.
+  * debian/*.8
+    - Delete. Generated from *.pod.
+  * debian/*.mk
+    - Update variables and make macros.
+  * debian/*.overrides
+    - update-inetd is not called without checks.
+
+ -- Jari Aalto <jari.aalto@cante.net>  Sat, 08 Aug 2009 23:00:55 +0000
+
 micro-httpd (20051212-10) unstable; urgency=low
 
   * debian/README.Debian-source:

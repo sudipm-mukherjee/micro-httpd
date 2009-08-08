@@ -74,7 +74,6 @@ Make sure the paths to the certificate and executable are correct, and
 again don not forget to change "dir" to the directory you want to
 serve.
 
-
 =head1 ENVIRONMENT
 
 None.

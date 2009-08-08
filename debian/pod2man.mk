@@ -7,7 +7,6 @@
 #   License
 #
 #	This program is free software; you can redistribute it and/or
-#	This program is free software; you can redistribute it and/or
 #	modify it under the terms of the GNU General Public License as
 #	published by the Free Software Foundation; either version 2 of the
 #	License, or (at your option) any later version
@@ -26,13 +25,15 @@
 #       install: build $(MANPAGE)
 
 ifneq (,)
-This makefile requires GNU Make.
+    This makefile requires GNU Make.
 endif
 
-# These variables *must* be set when calling
-PACKAGE		= package
-PODCENTER	= $$(date "+%Y-%m-%d")
-MANSECT		= 1
+# This variable *must* be set when calling
+PACKAGE		?= package
+
+# Optional variables to set
+MANSECT		?= 1
+PODCENTER	?= $$(date "+%Y-%m-%d")
 
 # Directories
 MANSRC		=
@@ -41,14 +42,14 @@ MANDEST		= $(MANSRC)
 MANPOD		= $(MANSRC)$(PACKAGE).$(MANSECT).pod
 MANPAGE		= $(MANDEST)$(PACKAGE).$(MANSECT)
 
-# FIXME: Remove 2009
-# >= 5.10.0-16 has --utf8 option
 POD2MAN		= pod2man
 POD2MAN_FLAGS	= --utf8
 
 makeman: $(MANPAGE)
 
 $(MANPAGE): $(MANPOD)
+	# make target - create manual page from a *.pod page
+	podchecker $(MANPOD)
 	LC_ALL= LANG=C $(POD2MAN) $(POD2MAN_FLAGS) \
 		--center="$(PODCENTER)" \
 		--name="$(PACKAGE)" \

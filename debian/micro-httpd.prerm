@@ -9,6 +9,12 @@ conf=/etc/inetd.conf
 port="www"
 entry=
 
+Debhelper ()
+{
+    :
+    #DEBHELPER#
+}
+
 Die ()
 {
     echo "$0: $*" >&2
@@ -20,23 +26,24 @@ IsInetd ()
     [ -x /usr/sbin/update-inetd ]
 }
 
-Debhelper ()
+IsInetdConf ()
 {
-    :
-    #DEBHELPER#
+    [ -f $conf ]
 }
 
 InetdName ()
 {
-    name=inetd
+    local name=
 
-    if [ -f /etc/init.d/openbsd-inetd ]; then
+    if [ -f /etc/init.d/inetutils-inetd ]; then
+	name=inetutils-inetd
+    elif [ -f /etc/init.d/openbsd-inetd ]; then
         name="openbsd-inetd"
     elif [ -f /etc/init.d/rlinetd ]; then
         name="rlinetd"
     fi
 
-    echo $name
+    [ ! "$name" ] || echo $name
 }
 
 MainInetd ()
@@ -45,13 +52,19 @@ MainInetd ()
 
 	echo "$0: removing $conf entry" >&2
 	update-inetd --group STANDARD --remove "$port.*$PACKAGE"
-	invoke-rc.d $(InetdName) reload
+
+	local name=$(InetdName)
+
+	[ ! "$name" ] || invoke-rc.d $name reload
     fi
 }
 
 Main ()
 {
-    IsInetd && MainInetd "$@"
+    if IsInetd ; then
+	MainInetd "$@"
+    fi
+
     Debhelper
 }
 
