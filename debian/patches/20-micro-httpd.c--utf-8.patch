@@ -1,18 +1,17 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## ../micro_httpd.c-utf-8.patch.dpatch by Jari Aalto <jari.aalto@cante.net>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: charset=iso-8859-1 to utf-8
+From 3842cd28126855628254e0e2701d988e38fc34d8 Mon Sep 17 00:00:00 2001
+From: Jari Aalto <jari.aalto@cante.net>
+Date: Sun, 26 Oct 2008 14:46:25 +0200
+Subject: [PATCH] charset=iso-8859-1 to utf-8
 
-@DPATCH@
-
+Signed-off-by: Jari Aalto <jari.aalto@cante.net>
+---
  micro_httpd.c |    6 +++---
  1 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git micro_httpd.c micro_httpd.c
+diff --git a/micro_httpd.c b/micro_httpd.c
 index c87034a..2ebbd48 100644
---- old/micro_httpd.c
-+++ new/micro_httpd.c
+--- a/micro_httpd.c
++++ b/micro_httpd.c
 @@ -197,9 +197,9 @@ get_mime_type( char* name )
  
      dot = strrchr( name, '.' );
@@ -34,3 +33,6 @@ index c87034a..2ebbd48 100644
      }
  
  
+-- 
+1.6.5
+

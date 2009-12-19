@@ -2,16 +2,15 @@ Source: micro-httpd
 Section: httpd
 Priority: optional
 Maintainer: Jari Aalto <jari.aalto@cante.net>
-Build-Depends: debhelper (>= 7), dpatch
-Standards-Version: 3.8.2
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.8.3
 Vcs-Browser: http://git.debian.org/?p=collab-maint/micro-httpd.git
 Vcs-Git: git://git.debian.org/git/collab-maint/micro-httpd.git
 Homepage: http://www.acme.com/software/micro_httpd
 
 Package: micro-httpd
-Section: web
 Architecture: any
-Depends: ${shlibs:Depends}, openbsd-inetd | inet-superserver | micro-inetd | netcat-traditional
+Depends: ${misc:Depends}, ${shlibs:Depends}, openbsd-inetd | inet-superserver | micro-inetd | netcat-traditional
 Suggests: micro-proxy
 Provides: httpd
 Description: really small HTTP server

@@ -1,3 +1,32 @@
+micro-httpd (20051212-12) unstable; urgency=low
+
+  * Move to format: 3.0 (quilt).
+  * debian/clean
+    - Move content from debian/rules for dh(1).
+  * debian/control
+    - (Build-Depends): Remove dpatch.
+    - (Depends): add ${misc:Depends} for debhelper.
+    - (Standards-Version): update to 3.8.3.
+    - (Section) [source]: Correct to httpd.
+    - (Section) [binary]: Remove duplicate header (lintian).
+  * debian/copyright
+    - Use FSF URL (FSF recommendation).
+  * debian/micro-httpd.8.pod
+    - Add copyright.
+  * debian/micro-httpd.manpages
+    - Move content from debian/rules for dh(1).
+  * debian/README.source
+    - Delete, obsoleted by format 3.0.
+  * debian/patches
+    - Convert to quilt.
+  * debian/rules
+    - Remove dpatch.
+    - Remove rules obsoleted by dh(1).
+  * debian/source/format
+    - New file.
+
+ -- Jari Aalto <jari.aalto@cante.net>  Sat, 19 Dec 2009 16:41:06 +0200
+
 micro-httpd (20051212-11) unstable; urgency=low
 
   * debian/compat: update to 7.

@@ -5,37 +5,16 @@ BIN	= micro_httpd
 
 MANSECT = 8
 MANSRC  = debian
-MK_MAN  = pod2man.mk
 
 include debian/debian-vars.mk
-include /usr/share/dpatch/dpatch.make
 
 man:
-	# convert *.pod to manual page
-	$(MAKE) -C $(MANSRC) -f $(MK_MAN) PACKAGE=$(PACKAGE) \
+	# target: man -- convert *.pod to manual page
+	$(MAKE) -C $(MANSRC) -f pod2man.mk PACKAGE=$(PACKAGE) \
 	MANSECT=$(MANSECT) makeman
 
-build-stamp: patch-stamp
-	dh_testdir
-
-	# Building package
-	CFLAGS="$(CFLAGS)" $(MAKE) $(MAKE_FLAGS)
-
-	touch build-stamp
-
-build: build-stamp man
-
-clean: unpatch
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp
-
-	# Cleaning package
-	[ ! -f Makefile ] || $(MAKE) clean
-
-	dh_clean
-
-install: build
+install: build man
+	# target: install
 	dh_testdir
 	dh_testroot
 	dh_prep
@@ -53,15 +32,14 @@ install: build
 	rm -f $(MAN8DIR)/*
 	$(INSTALL_DATA) $(MANSRC)/*.8 $(MAN8DIR)
 
-binary-indep: build install
-
 binary-arch: build install
+	# target: binary-arch
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs
-	dh_installdocs debian/NEWS.Debian debian/README*
+	dh_installdocs
 	dh_install
-	dh_installman debian/*.$(MANSECT)
+	dh_installman
 	dh_link
 	dh_strip
 	dh_compress
@@ -73,4 +51,11 @@ binary-arch: build install
 	dh_builddeb
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install man
+
+%:
+	dh $@
+
+.PHONY: install man
+.PHONY: binary-indep binary-arch binary
+
+# End of file
