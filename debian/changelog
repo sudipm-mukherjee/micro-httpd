@@ -1,3 +1,16 @@
+micro-httpd (20051212-13) unstable; urgency=low
+
+  * debian/compat
+    - Update to 8.
+  * debian/control
+    - (Build-Depends): Update to debhelper 8.
+    - (Standards-Version): update to 3.9.1.
+  * debian/micro-httpd.{postinst,prerm}
+    - Use /stc/init.d script if invoke-rc.d is not available.
+      See LP#394949.
+
+ -- Jari Aalto <jari.aalto@cante.net>  Mon, 25 Oct 2010 17:35:49 +0300
+
 micro-httpd (20051212-12) unstable; urgency=low
 
   * Move to format: 3.0 (quilt).

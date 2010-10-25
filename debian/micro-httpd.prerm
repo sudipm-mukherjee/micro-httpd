@@ -15,6 +15,11 @@ Debhelper ()
     #DEBHELPER#
 }
 
+Which ()
+{
+    which "$1" > /dev/null 2>&1
+}
+
 Die ()
 {
     echo "$0: $*" >&2
@@ -46,6 +51,20 @@ InetdName ()
     [ ! "$name" ] || echo $name
 }
 
+CallInetd ()
+{
+    local name=$1
+    local cmd=$2
+
+    [ "$cmd" ] || return 0
+
+    if Which invoke-rc.d ; then
+	invoke-rc.d $name $cmd
+    else
+	/etc/init.d/$name $cmd
+    fi
+}
+
 MainInetd ()
 {
     if [ "$1" = "remove" ]; then
@@ -55,7 +74,7 @@ MainInetd ()
 
 	local name=$(InetdName)
 
-	[ ! "$name" ] || invoke-rc.d $name reload
+	CallInetd $name reload
     fi
 }
 
