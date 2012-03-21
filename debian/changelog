@@ -1,3 +1,19 @@
+micro-httpd (20051212-14) unstable; urgency=low
+
+  * debian/compat
+    - Update to 9
+  * debian/control
+    - (Build-Depends): Update to debhelper 9.
+    - (Standards-Version): Update to 3.9.3.1.
+  * debian/copyright
+    - Update to format 1.0.
+  * debian/rules
+    - Delete rules no longer used.
+    - (override_dh_auto_build): New. Use hardened CFLAGS.
+      http://wiki.debian.org/ReleaseGoals/SecurityHardeningBuildFlags
+
+ -- Jari Aalto <jari.aalto@cante.net>  Wed, 21 Mar 2012 05:43:27 -0400
+
 micro-httpd (20051212-13) unstable; urgency=low
 
   * debian/compat

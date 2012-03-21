@@ -3,25 +3,23 @@
 PACKAGE = micro-httpd
 BIN	= micro_httpd
 
-MANSECT = 8
-MANSRC  = debian
-
 include debian/debian-vars.mk
+
+export DEB_BUILD_MAINT_OPTIONS	= hardening=+all
+CFLAGS	+= -Wall -pedantic $(CPPFLAGS)
+LDFLAGS	+= -Wl,--as-needed
 
 man:
 	# target: man -- convert *.pod to manual page
-	$(MAKE) -C $(MANSRC) -f pod2man.mk PACKAGE=$(PACKAGE) \
-	MANSECT=$(MANSECT) makeman
+	$(MAKE) -C debian -f pod2man.mk PACKAGE=$(PACKAGE) \
+	MANSECT=8 makeman
 
-install: build man
-	# target: install
-	dh_testdir
-	dh_testroot
-	dh_prep
-	dh_installdirs
-	dh_lintian
+override_dh_auto_build: man
+	# Notify Makefile about compilation
+	touch micro_httpd.o
+	$(CC) $(CFLAGS) micro_httpd.c $(LDFLAGS) -o $(BIN)
 
-	# Installing package
+override_dh_auto_install:
 	install -d -m 0755 $(SBINDIR) $(MAN8DIR)
 	$(MAKE) install BINDIR=$(SBINDIR) MANDIR=$(MAN8DIR)
 
@@ -30,32 +28,11 @@ install: build man
 
 	# replace original manual page
 	rm -f $(MAN8DIR)/*
-	$(INSTALL_DATA) $(MANSRC)/*.8 $(MAN8DIR)
-
-binary-arch: build install
-	# target: binary-arch
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs
-	dh_installdocs
-	dh_install
-	dh_installman
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
+	$(INSTALL_DATA) debian/*.8 $(MAN8DIR)
 
 %:
 	dh $@
 
-.PHONY: install man
-.PHONY: binary-indep binary-arch binary
+.PHONY: man
 
 # End of file
