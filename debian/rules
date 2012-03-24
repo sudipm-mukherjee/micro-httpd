@@ -6,8 +6,8 @@ BIN	= micro_httpd
 include debian/debian-vars.mk
 
 export DEB_BUILD_MAINT_OPTIONS	= hardening=+all
-CFLAGS	+= -Wall -pedantic $(CPPFLAGS)
-LDFLAGS	+= -Wl,--as-needed
+export DEB_CFLAGS_MAINT_APPEND	= -Wall -pedantic
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
 man:
 	# target: man -- convert *.pod to manual page
@@ -15,9 +15,9 @@ man:
 	MANSECT=8 makeman
 
 override_dh_auto_build: man
-	# Notify Makefile about compilation
+	# Notify Makefile about compilation. We skip the *.o step.
 	touch micro_httpd.o
-	$(CC) $(CFLAGS) micro_httpd.c $(LDFLAGS) -o $(BIN)
+	$(CC) $(CFLAGS) $(CPPFLAGS) micro_httpd.c $(LDFLAGS) -o $(BIN)
 
 override_dh_auto_install:
 	install -d -m 0755 $(SBINDIR) $(MAN8DIR)

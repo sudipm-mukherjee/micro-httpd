@@ -1,3 +1,11 @@
+micro-httpd (20051212-15) unstable; urgency=low
+
+  * debian/rules
+    - Enable all hardening flags.
+    - Use DEB_*_MAINT_* variables.
+
+ -- Jari Aalto <jari.aalto@cante.net>  Sat, 24 Mar 2012 03:54:48 -0400
+
 micro-httpd (20051212-14) unstable; urgency=low
 
   * debian/compat
