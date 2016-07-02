@@ -38,9 +38,10 @@ endif
 PACKAGE		?= package
 
 # Optional variables to set
+BUILD_DATE	?= $$(dpkg-parsechangelog -S Date -lchangelog)
 MANSECT		?= 1
 PODCENTER 	?= User Commands
-PODDATE		?= $$(date "+%Y-%m-%d")
+PODDATE		?= $$(date -u "+%Y-%m-%d" -d "$(BUILD_DATE)")
 
 # Directories
 MANSRC		?=

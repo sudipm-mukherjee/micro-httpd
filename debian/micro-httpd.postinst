@@ -4,7 +4,7 @@ set -e
 
 PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 PACKAGE=$(basename $0 | sed 's/\..*//')
-WWWDIR=/var/www
+WWWDIR=/var/www/html
 conf=/etc/inetd.conf
 pkgdir=/usr/share/$PACKAGE
 port="www"
