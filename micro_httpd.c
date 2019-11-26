@@ -1,6 +1,6 @@
 /* micro_httpd - really small HTTP server
 **
-** Copyright © 1999 by Jef Poskanzer <jef@mail.acme.com>.
+** Copyright © 1999,2005 by Jef Poskanzer <jef@mail.acme.com>.
 ** All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
@@ -25,23 +25,33 @@
 ** SUCH DAMAGE.
 */
 
+
+#include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
+#include <dirent.h>
+#include <ctype.h>
+#include <time.h>
 #include <sys/stat.h>
-#include <sys/time.h>
+
 
 #define SERVER_NAME "micro_httpd"
 #define SERVER_URL "http://www.acme.com/software/micro_httpd/"
 #define PROTOCOL "HTTP/1.0"
 #define RFC1123FMT "%a, %d %b %Y %H:%M:%S GMT"
 
+
 /* Forwards. */
+static void file_details( char* dir, char* name );
 static void send_error( int status, char* title, char* extra_header, char* text );
 static void send_headers( int status, char* title, char* extra_header, char* mime_type, off_t length, time_t mod );
 static char* get_mime_type( char* name );
+static void strdecode( char* to, char* from );
+static int hexit( char c );
+static void strencode( char* to, size_t tosize, const char* from );
+
 
 int
 main( int argc, char** argv )
@@ -52,6 +62,8 @@ main( int argc, char** argv )
     int ich;
     struct stat sb;
     FILE* fp;
+    struct dirent **dl;
+    int i, n;
 
     if ( argc != 2 )
 	send_error( 500, "Internal Error", (char*) 0, "Config error - no dir specified." );
@@ -71,6 +83,7 @@ main( int argc, char** argv )
     if ( path[0] != '/' )
 	send_error( 400, "Bad Request", (char*) 0, "Bad filename." );
     file = &(path[1]);
+    strdecode( file, file );
     if ( file[0] == '\0' )
 	file = "./";
     len = strlen( file );
@@ -93,16 +106,14 @@ main( int argc, char** argv )
 	    goto do_file;
 	    }
 	send_headers( 200, "Ok", (char*) 0, "text/html", -1, sb.st_mtime );
-	(void) printf( "<HTML><HEAD><TITLE>Index of %s</TITLE></HEAD>\n<BODY BGCOLOR=\"#99cc99\"><H4>Index of %s</H4>\n<PRE>\n", file, file );
-	if ( strchr( file, '\'' ) == (char*) 0 )
-	    {
-	    (void) snprintf( command, sizeof(command),
-		"ls -lgF '%s' | tail +2 | sed -e 's/^\\([^ ][^ ]*\\)\\(  *[^ ][^ ]*  *[^ ][^ ]*  *[^ ][^ ]*\\)\\(  *[^ ][^ ]*\\)  *\\([^ ][^ ]*  *[^ ][^ ]*  *[^ ][^ ]*\\)  *\\(.*\\)$/\\1 \\3  \\4  |\\5/' -e '/ -> /!s,|\\([^*]*\\)$,|<A HREF=\"\\1\">\\1</A>,' -e '/ -> /!s,|\\(.*\\)\\([*]\\)$,|<A HREF=\"\\1\">\\1</A>\\2,' -e '/ -> /s,|\\([^@]*\\)\\(@* -> \\),|<A HREF=\"\\1\">\\1</A>\\2,' -e 's/|//'",
-		file );
-	    (void) fflush( stdout );
-	    system( command );
-	    }
-	(void) printf( "</PRE>\n<HR>\n<ADDRESS><A HREF=\"%s\">%s</A></ADDRESS>\n</BODY></HTML>\n", SERVER_URL, SERVER_NAME );
+	(void) printf( "<html><head><title>Index of %s</title></head>\n<body bgcolor=\"#99cc99\"><h4>Index of %s</h4>\n<pre>\n", file, file );
+	n = scandir( file, &dl, NULL, alphasort );
+	if ( n < 0 )
+	    perror( "scandir" );
+	else
+	    for ( i = 0; i < n; ++i )
+		file_details( file, dl[i]->d_name );
+	(void) printf( "</pre>\n<hr>\n<address><a href=\"%s\">%s</a></address>\n</body></html>\n", SERVER_URL, SERVER_NAME );
 	}
     else
 	{
@@ -119,16 +130,38 @@ main( int argc, char** argv )
     exit( 0 );
     }
 
+
+static void
+file_details( char* dir, char* name )
+    {
+    static char encoded_name[1000];
+    static char path[2000];
+    struct stat sb;
+    char timestr[16];
+
+    strencode( encoded_name, sizeof(encoded_name), name );
+    (void) snprintf( path, sizeof(path), "%s/%s", dir, name );
+    if ( lstat( path, &sb ) < 0 )
+	(void) printf( "<a href=\"%s\">%-32.32s</a>    ???\n", encoded_name, name );
+    else
+	{
+	(void) strftime( timestr, sizeof(timestr), "%d%b%Y %H:%M", localtime( &sb.st_mtime ) );
+	(void) printf( "<a href=\"%s\">%-32.32s</a>    %15s %14lld\n", encoded_name, name, timestr, (int64_t) sb.st_size );
+	}
+    }
+
+
 static void
 send_error( int status, char* title, char* extra_header, char* text )
     {
     send_headers( status, title, extra_header, "text/html", -1, -1 );
-    (void) printf( "<HTML><HEAD><TITLE>%d %s</TITLE></HEAD>\n<BODY BGCOLOR=\"#cc9999\"><H4>%d %s</H4>\n", status, title, status, title );
+    (void) printf( "<html><head><title>%d %s</title></head>\n<body bgcolor=\"#cc9999\"><h4>%d %s</h4>\n", status, title, status, title );
     (void) printf( "%s\n", text );
-    (void) printf( "<HR>\n<ADDRESS><A HREF=\"%s\">%s</A></ADDRESS>\n</BODY></HTML>\n", SERVER_URL, SERVER_NAME );
+    (void) printf( "<hr>\n<address><a href=\"%s\">%s</a></address>\n</body></html>\n", SERVER_URL, SERVER_NAME );
     (void) fflush( stdout );
     exit( 1 );
     }
+
 
 static void
 send_headers( int status, char* title, char* extra_header, char* mime_type, off_t length, time_t mod )
@@ -156,7 +189,9 @@ send_headers( int status, char* title, char* extra_header, char* mime_type, off_
     (void) printf( "\015\012" );
     }
 
-static char* get_mime_type( char* name )
+
+static char*
+get_mime_type( char* name )
     {
     char* dot;
 
@@ -189,7 +224,63 @@ static char* get_mime_type( char* name )
 	return "audio/midi";
     if ( strcmp( dot, ".mp3" ) == 0 )
 	return "audio/mpeg";
+    if ( strcmp( dot, ".ogg" ) == 0 )
+	return "application/ogg";
     if ( strcmp( dot, ".pac" ) == 0 )
 	return "application/x-ns-proxy-autoconfig";
     return "text/plain; charset=iso-8859-1";
+    }
+
+
+static void
+strdecode( char* to, char* from )
+    {
+    for ( ; *from != '\0'; ++to, ++from )
+	{
+	if ( from[0] == '%' && isxdigit( from[1] ) && isxdigit( from[2] ) )
+	    {
+	    *to = hexit( from[1] ) * 16 + hexit( from[2] );
+	    from += 2;
+	    }
+	else
+	    *to = *from;
+	}
+    *to = '\0';
+    }
+
+
+static int
+hexit( char c )
+    {
+    if ( c >= '0' && c <= '9' )
+	return c - '0';
+    if ( c >= 'a' && c <= 'f' )
+	return c - 'a' + 10;
+    if ( c >= 'A' && c <= 'F' )
+	return c - 'A' + 10;
+    return 0;		/* shouldn't happen, we're guarded by isxdigit() */
+    }
+
+
+static void
+strencode( char* to, size_t tosize, const char* from )
+    {
+    int tolen;
+
+    for ( tolen = 0; *from != '\0' && tolen + 4 < tosize; ++from )
+	{
+	if ( isalnum(*from) || strchr( "/_.-~", *from ) != (char*) 0 )
+	    {
+	    *to = *from;
+	    ++to;
+	    ++tolen;
+	    }
+	else
+	    {
+	    (void) sprintf( to, "%%%02x", (int) *from & 0xff );
+	    to += 3;
+	    tolen += 3;
+	    }
+	}
+    *to = '\0';
     }

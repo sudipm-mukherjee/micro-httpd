@@ -17,9 +17,9 @@ micro_httpd.o:	micro_httpd.c
 
 install:	all
 	rm -f ${BINDIR}/micro_httpd
-	cp micro_httpd ${BINDIR}
+	cp micro_httpd ${BINDIR}/micro_httpd
 	rm -f ${MANDIR}/micro_httpd.8
-	cp micro_httpd.8 ${MANDIR}
+	cp micro_httpd.8 ${MANDIR}/micro_httpd.8
 
 clean:
 	rm -f micro_httpd *.o core core.* *.core
