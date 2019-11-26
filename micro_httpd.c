@@ -1,6 +1,7 @@
 /* micro_httpd - really small HTTP server
 **
-** Copyright © 1999 by Jef Poskanzer <jef@acme.com>. All rights reserved.
+** Copyright © 1999 by Jef Poskanzer <jef@mail.acme.com>.
+** All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
 ** modification, are permitted provided that the following conditions
@@ -135,24 +136,24 @@ send_headers( int status, char* title, char* extra_header, char* mime_type, off_
     time_t now;
     char timebuf[100];
 
-    (void) printf( "%s %d %s\r\n", PROTOCOL, status, title );
-    (void) printf( "Server: %s\r\n", SERVER_NAME );
+    (void) printf( "%s %d %s\015\012", PROTOCOL, status, title );
+    (void) printf( "Server: %s\015\012", SERVER_NAME );
     now = time( (time_t*) 0 );
     (void) strftime( timebuf, sizeof(timebuf), RFC1123FMT, gmtime( &now ) );
-    (void) printf( "Date: %s\r\n", timebuf );
+    (void) printf( "Date: %s\015\012", timebuf );
     if ( extra_header != (char*) 0 )
-	(void) printf( "%s\r\n", extra_header );
+	(void) printf( "%s\015\012", extra_header );
     if ( mime_type != (char*) 0 )
-	(void) printf( "Content-Type: %s\r\n", mime_type );
+	(void) printf( "Content-Type: %s\015\012", mime_type );
     if ( length >= 0 )
-	(void) printf( "Content-Length: %lld\r\n", (int64_t) length );
+	(void) printf( "Content-Length: %lld\015\012", (int64_t) length );
     if ( mod != (time_t) -1 )
 	{
 	(void) strftime( timebuf, sizeof(timebuf), RFC1123FMT, gmtime( &mod ) );
-	(void) printf( "Last-Modified: %s\r\n", timebuf );
+	(void) printf( "Last-Modified: %s\015\012", timebuf );
 	}
-    (void) printf( "Connection: close\r\n" );
-    (void) printf( "\r\n" );
+    (void) printf( "Connection: close\015\012" );
+    (void) printf( "\015\012" );
     }
 
 static char* get_mime_type( char* name )
