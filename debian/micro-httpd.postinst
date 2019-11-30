@@ -127,7 +127,7 @@ Main ()
 	MainInetd "$@"
     fi
 
-    Debhelper
+    Debhelper "$@"
 }
 
 Main "$@"
