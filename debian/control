@@ -1,9 +1,9 @@
 Source: micro-httpd
 Section: httpd
 Priority: optional
-Maintainer: Jari Aalto <jari.aalto@cante.net>
-Build-Depends: debhelper (>= 9), dh-systemd
-Standards-Version: 3.9.8
+Maintainer: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Build-Depends: debhelper-compat (= 12)
+Standards-Version: 4.4.1
 Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/micro-httpd.git
 Vcs-Git: https://anonscm.debian.org/git/collab-maint/micro-httpd.git
 Homepage: http://www.acme.com/software/micro_httpd
