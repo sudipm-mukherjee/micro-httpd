@@ -2,6 +2,7 @@
 
 PACKAGE = micro-httpd
 BIN	= micro_httpd
+CC	= $(DEB_HOST_GNU_TYPE)-gcc
 
 include debian/debian-vars.mk
 
