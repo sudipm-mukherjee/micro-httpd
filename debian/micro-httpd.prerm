@@ -70,7 +70,7 @@ MainInetd ()
     if [ "$1" = "remove" ]; then
 
 	echo "$0: removing $conf entry" >&2
-	update-inetd --group STANDARD --remove "$port.*$PACKAGE"
+	update-inetd --remove "$port.*$PACKAGE"
 
 	local name=$(InetdName)
 
