@@ -1,3 +1,16 @@
+micro-httpd (20051212-16) unstable; urgency=medium
+
+  * Update Maintainer (Closes: #920132)
+  * Update compat level to 12
+  * Update Standards-Version to 4.4.1
+  * Update Vcs to github
+  * Update to correct manpage section
+  * Option --group is not needed with update-inetd --remove (Closes: #909503)
+  * Fix the postinst script to create systemd symlinks
+  * Fix crosscompiling of source
+
+ -- Sudip Mukherjee <sudipm.mukherjee@gmail.com>  Sun, 01 Dec 2019 00:21:43 +0000
+
 micro-httpd (20051212-15.1) unstable; urgency=medium
 
   * Non-maintainer upload.
