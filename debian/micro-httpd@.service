@@ -1,0 +1,10 @@
+[Unit]
+Description=micro-httpd
+Documentation=man:micro-httpd(8)
+
+[Service]
+User=nobody
+Group=www-data
+ExecStart=-/usr/sbin/micro-httpd /var/www/html
+StandardInput=socket
+

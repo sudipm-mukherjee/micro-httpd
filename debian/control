@@ -1,0 +1,25 @@
+Source: micro-httpd
+Section: httpd
+Priority: optional
+Maintainer: Jari Aalto <jari.aalto@cante.net>
+Build-Depends: debhelper (>= 9), dh-systemd
+Standards-Version: 3.9.8
+Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/micro-httpd.git
+Vcs-Git: https://anonscm.debian.org/git/collab-maint/micro-httpd.git
+Homepage: http://www.acme.com/software/micro_httpd
+
+Package: micro-httpd
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}, openbsd-inetd | inet-superserver | micro-inetd | netcat-traditional | systemd-sysv
+Suggests: micro-proxy
+Provides: httpd
+Description: really small HTTP server
+ A very small HTTP server implemented in 150 lines of code.
+ Program can be used to serve HTTPS by wrapping it with stunnel.
+ It implements all the basic features of an HTTP server, including:
+ .
+   * Security against ".." filename snooping
+   * The common MIME types
+   * Trailing-slash redirection
+   * index.html
+   * Directory listings
