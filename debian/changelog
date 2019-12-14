@@ -1,3 +1,11 @@
+micro-httpd (20140814-1) unstable; urgency=medium
+
+  * Update to upstream 20140814 (Closes: #911932)
+  * Add Rules-Requires-Root
+  * Use https in copyright
+
+ -- Sudip Mukherjee <sudipm.mukherjee@gmail.com>  Sun, 15 Dec 2019 00:40:00 +0000
+
 micro-httpd (20051212-16) unstable; urgency=medium
 
   * Update Maintainer (Closes: #920132)
