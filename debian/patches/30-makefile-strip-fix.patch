@@ -5,23 +5,24 @@ Subject: [PATCH] Remove strip
 
 
 Signed-off-by: Jari Aalto <jari.aalto@cante.net>
+Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
 ---
  Makefile |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 7cdc785..52bb489 100644
+index 090cadc..2faa776 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -4,7 +4,7 @@ CC =		gcc
- CFLAGS =	-O
- #CFLAGS =	-g
+@@ -3,7 +3,7 @@ MANDIR =	/usr/local/man/man8
+ CC =		cc
+ CFLAGS =	-O -ansi -pedantic -U__STRICT_ANSI__ -Wall -Wpointer-arith -Wshadow -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wno-long-long
  #SYSVLIBS =	-lnsl -lsocket
--LDFLAGS =	-s ${SYSVLIBS}
-+LDFLAGS =	${SYSVLIBS}
- #LDFLAGS =	-g ${SYSVLIBS}
+-LDFLAGS =	-s $(SYSVLIBS)
++LDFLAGS =	$(SYSVLIBS)
  
  all:		micro_httpd
+ 
 -- 
 1.6.5
 
