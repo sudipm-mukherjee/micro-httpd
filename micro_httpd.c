@@ -26,14 +26,14 @@
 */
 
 
-#include <sys/types.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 #include <dirent.h>
 #include <ctype.h>
 #include <time.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 
 
@@ -56,7 +56,7 @@ static void strencode( char* to, size_t tosize, const char* from );
 int
 main( int argc, char** argv )
     {
-    char line[10000], method[10000], path[10000], protocol[10000], idx[20000], location[20000], command[20000];
+    char line[10000], method[10000], path[10000], protocol[10000], idx[20000], location[20000];
     char* file;
     size_t len;
     int ich;
@@ -106,14 +106,28 @@ main( int argc, char** argv )
 	    goto do_file;
 	    }
 	send_headers( 200, "Ok", (char*) 0, "text/html", -1, sb.st_mtime );
-	(void) printf( "<html><head><title>Index of %s</title></head>\n<body bgcolor=\"#99cc99\"><h4>Index of %s</h4>\n<pre>\n", file, file );
+	(void) printf( "\
+<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n\
+<html>\n\
+  <head>\n\
+    <meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\">\n\
+    <title>Index of %s</title>\n\
+  </head>\n\
+  <body bgcolor=\"#99cc99\">\n\
+    <h4>Index of %s</h4>\n\
+    <pre>\n", file, file );
 	n = scandir( file, &dl, NULL, alphasort );
 	if ( n < 0 )
 	    perror( "scandir" );
 	else
 	    for ( i = 0; i < n; ++i )
 		file_details( file, dl[i]->d_name );
-	(void) printf( "</pre>\n<hr>\n<address><a href=\"%s\">%s</a></address>\n</body></html>\n", SERVER_URL, SERVER_NAME );
+	(void) printf( "\
+    </pre>\n\
+    <hr>\n\
+    <address><a href=\"%s\">%s</a></address>\n\
+  </body>\n\
+</html>\n", SERVER_URL, SERVER_NAME );
 	}
     else
 	{
@@ -146,7 +160,7 @@ file_details( char* dir, char* name )
     else
 	{
 	(void) strftime( timestr, sizeof(timestr), "%d%b%Y %H:%M", localtime( &sb.st_mtime ) );
-	(void) printf( "<a href=\"%s\">%-32.32s</a>    %15s %14lld\n", encoded_name, name, timestr, (int64_t) sb.st_size );
+	(void) printf( "<a href=\"%s\">%-32.32s</a>    %15s %14lld\n", encoded_name, name, timestr, (long long) sb.st_size );
 	}
     }
 
@@ -155,9 +169,21 @@ static void
 send_error( int status, char* title, char* extra_header, char* text )
     {
     send_headers( status, title, extra_header, "text/html", -1, -1 );
-    (void) printf( "<html><head><title>%d %s</title></head>\n<body bgcolor=\"#cc9999\"><h4>%d %s</h4>\n", status, title, status, title );
+    (void) printf( "\
+<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n\
+<html>\n\
+  <head>\n\
+    <meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\">\n\
+    <title>%d %s</title>\n\
+  </head>\n\
+  <body bgcolor=\"#cc9999\">\n\
+    <h4>%d %s</h4>\n", status, title, status, title );
     (void) printf( "%s\n", text );
-    (void) printf( "<hr>\n<address><a href=\"%s\">%s</a></address>\n</body></html>\n", SERVER_URL, SERVER_NAME );
+    (void) printf( "\
+    <hr>\n\
+    <address><a href=\"%s\">%s</a></address>\n\
+  </body>\n\
+</html>\n", SERVER_URL, SERVER_NAME );
     (void) fflush( stdout );
     exit( 1 );
     }
@@ -179,7 +205,7 @@ send_headers( int status, char* title, char* extra_header, char* mime_type, off_
     if ( mime_type != (char*) 0 )
 	(void) printf( "Content-Type: %s\015\012", mime_type );
     if ( length >= 0 )
-	(void) printf( "Content-Length: %lld\015\012", (int64_t) length );
+	(void) printf( "Content-Length: %lld\015\012", (long long) length );
     if ( mod != (time_t) -1 )
 	{
 	(void) strftime( timebuf, sizeof(timebuf), RFC1123FMT, gmtime( &mod ) );
@@ -197,9 +223,11 @@ get_mime_type( char* name )
 
     dot = strrchr( name, '.' );
     if ( dot == (char*) 0 )
-	return "text/plain; charset=iso-8859-1";
+	return "text/plain; charset=UTF-8";
     if ( strcmp( dot, ".html" ) == 0 || strcmp( dot, ".htm" ) == 0 )
-	return "text/html; charset=iso-8859-1";
+	return "text/html; charset=UTF-8";
+    if ( strcmp( dot, ".xhtml" ) == 0 || strcmp( dot, ".xht" ) == 0 )
+	return "application/xhtml+xml; charset=UTF-8";
     if ( strcmp( dot, ".jpg" ) == 0 || strcmp( dot, ".jpeg" ) == 0 )
 	return "image/jpeg";
     if ( strcmp( dot, ".gif" ) == 0 )
@@ -208,6 +236,8 @@ get_mime_type( char* name )
 	return "image/png";
     if ( strcmp( dot, ".css" ) == 0 )
 	return "text/css";
+    if ( strcmp( dot, ".xml" ) == 0 || strcmp( dot, ".xsl" ) == 0 )
+	return "text/xml; charset=UTF-8";
     if ( strcmp( dot, ".au" ) == 0 )
 	return "audio/basic";
     if ( strcmp( dot, ".wav" ) == 0 )
@@ -228,7 +258,7 @@ get_mime_type( char* name )
 	return "application/ogg";
     if ( strcmp( dot, ".pac" ) == 0 )
 	return "application/x-ns-proxy-autoconfig";
-    return "text/plain; charset=iso-8859-1";
+    return "text/plain; charset=UTF-8";
     }
 
 
