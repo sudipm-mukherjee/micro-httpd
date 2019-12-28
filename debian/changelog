@@ -1,3 +1,9 @@
+micro-httpd (20140814-2) UNRELEASED; urgency=medium
+
+  * Use correct machine-readable copyright file URI.
+
+ -- Debian Janitor <janitor@jelmer.uk>  Sat, 28 Dec 2019 04:12:05 +0000
+
 micro-httpd (20140814-1) unstable; urgency=medium
 
   * Update to upstream 20140814 (Closes: #911932)
