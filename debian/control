@@ -7,7 +7,7 @@ Standards-Version: 4.4.1
 Rules-Requires-Root: no
 Vcs-Browser: https://github.com/sudipm-mukherjee/micro-httpd.git
 Vcs-Git: https://github.com/sudipm-mukherjee/micro-httpd.git
-Homepage: http://www.acme.com/software/micro_httpd
+Homepage: https://www.acme.com/software/micro_httpd
 
 Package: micro-httpd
 Architecture: any
