@@ -1,9 +1,16 @@
-micro-httpd (20140814-2) UNRELEASED; urgency=medium
+micro-httpd (20140814-2) unstable; urgency=medium
 
+  [ Debian Janitor ]
   * Use correct machine-readable copyright file URI.
   * Use secure URI in Homepage field.
 
- -- Debian Janitor <janitor@jelmer.uk>  Sat, 28 Dec 2019 04:12:05 +0000
+  [ Sudip Mukherjee ]
+  * Update Standards-Version to 4.5.0.
+  * Rename NEWS.Debian to NEWS.
+  * Use https with watch file.
+  * Remove path from maintainer script.
+
+ -- Sudip Mukherjee <sudipm.mukherjee@gmail.com>  Thu, 06 Feb 2020 18:40:35 +0000
 
 micro-httpd (20140814-1) unstable; urgency=medium
 
