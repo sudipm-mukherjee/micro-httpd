@@ -1,2 +1,2 @@
 version=3
-http://www.acme.com/software/micro_httpd/ .*micro_httpd_(.+).tar.gz
+https://www.acme.com/software/micro_httpd/ .*micro_httpd_(.+).tar.gz
